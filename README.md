@@ -1,5 +1,5 @@
 # Soap-Htcondor
-A wrapper for consuming HTCondor soap API
+A wrapper for consuming HTCondor soap API [Check HTCondor manual](http://research.cs.wisc.edu/htcondor/manual/v8.4/6_1Web_Service.html)
 
 ## Installation
 
@@ -15,8 +15,11 @@ Update HTCondor config file to accept incoming SOAP requests
 ```
 ENABLE_SOAP = TRUE
 ALLOW_SOAP = *
+QUEUE_ALL_USERS_TRUSTED = TRUE
 SCHEDD_ARGS = -p 8080
 SOAP_LEAVE_IN_QUEUE = ((JobStatus==4) && ((ServerTime - CompletionDate) < (60 * 60 * 24)))
+HOSTALLOW_WRITE = *
+#NETWORK_INTERFACE = eth1
 ```
 
 And then restart the service
@@ -25,9 +28,38 @@ And then restart the service
 sudo service condor restart
 ```
 
+Check if it works
+
+```sh
+condor_status -schedd -constraint "HasSOAPInterface=?=TRUE"
+```
+
+or
+
+```sh
+nc localhost 8080 <<EOF
+POST / HTTP/1.1
+User-Agent: whatever
+Content-Type: text/xml; charset=utf-8
+SOAPAction: ""
+
+<?xml version="1.0" encoding="UTF-8"?>
+<SOAP-ENV:Envelope
+ xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"
+ xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+ xmlns:ns="urn:condor">
+ <SOAP-ENV:Body SOAP-ENV:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
+     <ns:getVersionString />
+ </SOAP-ENV:Body>
+</SOAP-ENV:Envelope>
+EOF
+```
+
 ## Condor Collector
 Query HTCondor for information like SubmittorAds, MasterAds, Platform and Version strings, etc
-See http://www.wsdl-analyzer.com/service/service/1155440757?version=1
+See [here.](http://www.wsdl-analyzer.com/service/service/1155440757?version=1)
 
 | Methods         |
 |-----------------|
@@ -45,7 +77,7 @@ See http://www.wsdl-analyzer.com/service/service/1155440757?version=1
 
 ## Condor Schedduler
 
-See http://www.wsdl-analyzer.com/service/service/100686?version=1
+See [here.](http://www.wsdl-analyzer.com/service/service/100686?version=1)
 
 | Methods         |
 |-----------------|
