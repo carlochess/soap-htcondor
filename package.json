@@ -22,6 +22,7 @@
   },
   "homepage": "https://github.com/carlochess/soap-htcondor#readme",
   "dependencies": {
+    "async": "^2.0.1",
     "soap": "^0.16.0"
   },
   "devDependencies": {

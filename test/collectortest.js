@@ -1,23 +1,23 @@
 var expect = require("chai").expect;
 var HTCondor = require("../index.js");
 
-describe('HTCondor', function(){
-  var htcondor = htcondor = new HTCondor({url:"http://localhost:8080/", wsdl : "wsdl/condorSchedd.wsdl"});
+describe('HTCondor Collector', function(){
+  var htcondor = new HTCondor({url:"http://172.28.128.3:8080/", wsdl : "wsdl/condorCollector.wsdl"});
   var coll;
-  
+
   before(function(next) {
      htcondor.createCollector(function(err, c){
        if(err){
-        console.log("Error al crear Schedd")
+        console.log("Error al crear Collector")
         return;
        }
        coll = c;
        next();
      });
   });
-  
+
   /*
-  { status: { code: 'SUCCESS' }, message: '$CondorVersion: 8.4.8 Jun 30 2016 BuildID: 373513 $' }
+  '$CondorVersion: 8.4.8 Jun 30 2016 BuildID: 373513 $'
   */
   it("should return HTCondor version string", function(next){
     coll.getVersionString(function(err, str){
@@ -25,7 +25,7 @@ describe('HTCondor', function(){
         next(err);
         return;
       }
-      expect(str).to.equal(str);
+      expect(str.startsWith("$CondorVersion")).to.be.true;
       next();
     })
   });
@@ -38,9 +38,9 @@ describe('HTCondor', function(){
         next(err);
         return;
       }
-      expect(str).to.equal(str);
+      expect(str.startsWith("$CondorPlatform")).to.be.true;
       next();
     })
   });
-  
+
 });

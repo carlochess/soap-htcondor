@@ -1,24 +1,24 @@
 var expect = require("chai").expect;
 var HTCondor = require("../index.js");
 
-describe('HTCondor', function(){
-  var htcondor = htcondor = new HTCondor({url:"http://localhost:8080/", wsdl : "wsdl/condorCollector.wsdl"});
+describe('HTCondor Schedduler', function(){
+  var htcondor = new HTCondor({url:"http://172.28.128.3:8080/", wsdl : "wsdl/condorSchedd.wsdl"});
   var schedd;
-  
+
   before(function(next) {
-     htcondor.createSchedd(function(err, c){
+     htcondor.createSchedduler(function(err, c){
        if(err){
-        console.log("Error al crear Collector")
+        console.log("Error al crear Schedd")
         return;
        }
-       coll = c;
+       schedd = c;
        next();
      });
   });
-  
-  
-  it("should return HTCondor version string", function(next){
-    schedd.getVersionString(function(err, str){
+
+
+  it("should return HTCondor  xxx", function(next){
+    schedd.xxx({},function(err, str){
       if(err){
         next(err);
         return;
@@ -27,5 +27,5 @@ describe('HTCondor', function(){
       next();
     })
   });
-  
+
 });
