@@ -4,7 +4,8 @@
   "description": "A wrapper for consuming HTCondor soap API",
   "main": "index.js",
   "scripts": {
-    "test": "mocha --reporter spec"
+    "test": "mocha --reporter spec",
+    "bin": "node bin/main.js"
   },
   "repository": {
     "type": "git",
@@ -23,7 +24,7 @@
   "homepage": "https://github.com/carlochess/soap-htcondor#readme",
   "dependencies": {
     "async": "^2.0.1",
-    "soap": "^0.16.0"
+    "soap": "^0.17.0"
   },
   "devDependencies": {
     "bluebird": "^3.4.6",

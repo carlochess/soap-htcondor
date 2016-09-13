@@ -2,7 +2,7 @@ var expect = require("chai").expect;
 var HTCondor = require("../index.js");
 
 describe('HTCondor Schedduler', function(){
-  var htcondor = new HTCondor({url:"http://172.28.128.3:8080/", wsdl : "wsdl/condorSchedd.wsdl"});
+  var htcondor = new HTCondor({url:"http://localhost:8080/", wsdl : "wsdl/condorSchedd.wsdl"});
   var schedd;
 
   before(function(next) {

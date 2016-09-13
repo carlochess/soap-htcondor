@@ -2,13 +2,12 @@ var HTCondor = require("../index.js")
 var join = require("path").join
 
 var job = {
-    universe: "vanilla",
+    universe: "VANILLA",
     executable: "/bin/sleep",
     arguments: "31",
     notification: "never",
-    owner: "vagrant",
+    owner: "rooot",
     type: "5",
-    //transfer_output_files: 'bogus',
     requirements: 'TRUE',
     shouldtransferfiles: "yes",
     when_to_transfer_output: "ON_EXIT",
@@ -19,7 +18,7 @@ var job = {
     queue: 1
 };
 
-var htcondor = new HTCondor({url:"http://172.28.128.3:8080/", wsdl : join(".." , "wsdl", "condorSchedd.wsdl")});
+var htcondor = new HTCondor({url:"http://localhost:8080/", wsdl : join(__dirname, ".." , "wsdl", "condorSchedd.wsdl")});
 
 htcondor.createSchedduler(function(err, schedd){
    if(err){
@@ -29,10 +28,10 @@ htcondor.createSchedduler(function(err, schedd){
 
    schedd.createJob(job, function(err, job){
        if(err){
-         console.log(err)
+         console.log("Error al enviar job",err)
          return
        }
-       //console.log(job)
+       console.log(job)
    })
 
    /*schedd.createDagJob(job, function(err, job){
