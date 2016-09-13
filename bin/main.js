@@ -6,7 +6,7 @@ var job = {
     executable: "/bin/sleep",
     arguments: "31",
     notification: "never",
-    owner: "rooot",
+    owner: "vagrant",
     type: "5",
     requirements: 'TRUE',
     shouldtransferfiles: "yes",
