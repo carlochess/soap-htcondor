@@ -6,7 +6,7 @@ var job = {
     executable: "/bin/sleep",
     arguments: "31",
     notification: "never",
-    owner: "vagrant",
+    owner: "rooot",
     type: "5",
     requirements: 'TRUE',
     shouldtransferfiles: "yes",
@@ -17,6 +17,30 @@ var job = {
     iwd: "/tmp",
     queue: 1
 };
+
+var dockerJob = {
+    universe: "VANILLA",
+    dockerimage: "node",
+    executable: "node",
+    arguments: '-e "console.log(2+2)"',
+    notification: "never",
+    owner: "rooot",
+    type: "5",
+    requirements: 'TRUE',
+    shouldtransferfiles: "no",
+    when_to_transfer_output: "ON_EXIT",
+    out: "example1.out",
+    err: "example1.err",
+    log: "example1.log",
+    iwd: "/tmp",
+    queue: 1
+};
+
+var dagJob = {
+    dagLocation: join(__dirname, "..", "test", "dagman.dag"),
+    owner: "rooot"
+};
+
 
 var htcondor = new HTCondor({url:"http://localhost:8080/", wsdl : join(__dirname, ".." , "wsdl", "condorSchedd.wsdl")});
 
@@ -34,7 +58,19 @@ htcondor.createSchedduler(function(err, schedd){
        console.log(job)
    })
 
-   /*schedd.createDagJob(job, function(err, job){
+   schedd.createDagJob(dagJob, function(err, job){
+       if(err){
+         console.log("Error al enviar dag",err)
+         return
+       }
        console.log(job)
-   })*/
+   })
+
+   schedd.createDockerJob(dockerJob, function(err, job){
+       if(err){
+         console.log("Error al enviar dag",err)
+         return
+       }
+       console.log(job)
+   })
 })
