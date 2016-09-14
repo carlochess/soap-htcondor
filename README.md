@@ -2,14 +2,14 @@
 A wrapper for consuming HTCondor soap API [Check HTCondor manual](http://research.cs.wisc.edu/htcondor/manual/v8.4/6_1Web_Service.html)
 
 ## Installation
-
+You can install  this package by running in the command line the following command:
 ```sh
 $ npm install soap-htcondor --save
 ```
 
 ## HTCondor config
 
-Update HTCondor config file to accept incoming SOAP requests
+Update HTCondor config file to accept incoming SOAP requests at port 8080.
 
 /etc/condor/config.d/condor_config.local
 ```
@@ -22,13 +22,13 @@ HOSTALLOW_WRITE = *
 #NETWORK_INTERFACE = eth1
 ```
 
-And then restart the service
+Restart the HTCondor service
 
 ```sh
 sudo service condor restart
 ```
 
-Check if it works
+And then, check if it works running:
 
 ```sh
 condor_status -schedd -constraint "HasSOAPInterface=?=TRUE"
@@ -57,9 +57,11 @@ SOAPAction: ""
 EOF
 ```
 
+This package expose two Classes, Collector and Scheduler, the first one has every method
+for query HTCondor about Jobs status, Machine stats or even platform and version of the program.
+
 ## Condor Collector
 Query HTCondor for information like SubmittorAds, MasterAds, Platform and Version strings, etc
-See [here.](http://www.wsdl-analyzer.com/service/service/1155440757?version=1)
 
 | Methods         |
 |-----------------|
@@ -74,10 +76,8 @@ See [here.](http://www.wsdl-analyzer.com/service/service/1155440757?version=1)
 |queryStorageAds|
 |queryAnyAds|
 
-
 ## Condor Schedduler
-
-See [here.](http://www.wsdl-analyzer.com/service/service/100686?version=1)
+The scheduller has everything that you need for the manage of the HTCondor Jobs
 
 | Methods         |
 |-----------------|
@@ -108,18 +108,64 @@ See [here.](http://www.wsdl-analyzer.com/service/service/100686?version=1)
 ### Check HTCondor version
 
 ```javascript
-client.getPlatformString({}, function(err, result) {
-    if (err) {
-        console.log("Error al conectar");
-        return;
-    }
-    console.log(result);
-});
+
+var HTCondor = require("soap-htcondor")
+var join = require("path").join
+
+var htcondor = new HTCondor({url:"http://localhost:8080/", wsdl : join(__dirname, "wsdl", "condorCollector.wsdl")});
+
+htcondor.createCollector(function(err, client){
+  client.getVersionString({}, function(err, result) {
+      if (err) {
+          console.log("Error al conectar");
+          return;
+      }
+      console.log(result);
+  });
+})
+
 ```
 
 ### Submiting a Job
 
 ```javascript
+var HTCondor = require("soap-htcondor")
+var join = require("path").join
+
+var htcondor = new HTCondor({url:"http://localhost:8080/", wsdl : join(__dirname, "wsdl", "condorSchedd.wsdl")});
+
+var job = {
+    universe: "VANILLA",
+    executable: "/bin/sleep",
+    arguments: "31",
+    notification: "never",
+    owner: "rooot",
+    type: "5",
+    requirements: 'TRUE',
+    shouldtransferfiles: "yes",
+    when_to_transfer_output: "ON_EXIT",
+    out: "example1.out",
+    err: "example1.err",
+    log: "example1.log",
+    iwd: "/tmp",
+    queue: 1
+};
+
+htcondor.createSchedduler(function(err, schedd){
+   if(err){
+    console.log("Error al crear Schedd", err)
+    return;
+   }
+
+   schedd.createJob(job, function(err, job){
+       if(err){
+         console.log("Error al enviar job",err)
+         return
+       }
+       console.log(job)
+   })
+})
+
 ```
 
 ### Submiting a Workflow
@@ -128,8 +174,6 @@ client.getPlatformString({}, function(err, result) {
 
 ### Checking for a Job Status
 
-### 
+###
 
 ## Testing
-
-

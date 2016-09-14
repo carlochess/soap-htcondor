@@ -20,9 +20,9 @@ var job = {
 
 var dockerJob = {
     universe: "VANILLA",
-    dockerimage: "node",
-    executable: "node",
-    arguments: '-e "console.log(2+2)"',
+    dockerimage: "haskell",
+    executable: "/usr/bin/ruby",
+    arguments: '-e "puts 2+2"',
     notification: "never",
     owner: "rooot",
     type: "5",
@@ -37,7 +37,7 @@ var dockerJob = {
 };
 
 var dagJob = {
-    dagLocation: join(__dirname, "..", "test", "dagman.dag"),
+    dagLocation: join(__dirname, "..", "test", "dag", "dagman.dag"),
     owner: "rooot"
 };
 
@@ -50,13 +50,13 @@ htcondor.createSchedduler(function(err, schedd){
     return;
    }
 
-   schedd.createJob(job, function(err, job){
+   /*schedd.createJob(job, function(err, job){
        if(err){
          console.log("Error al enviar job",err)
          return
        }
        console.log(job)
-   })
+   })*/
 
    schedd.createDagJob(dagJob, function(err, job){
        if(err){
@@ -66,11 +66,11 @@ htcondor.createSchedduler(function(err, schedd){
        console.log(job)
    })
 
-   schedd.createDockerJob(dockerJob, function(err, job){
+   /*schedd.createDockerJob(dockerJob, function(err, job){
        if(err){
          console.log("Error al enviar dag",err)
          return
        }
        console.log(job)
-   })
+   })*/
 })

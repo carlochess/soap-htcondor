@@ -1,0 +1,50 @@
+[
+  Type = "DagStatus";
+  DagFiles = {
+    "/home/rooot/Documentos/soap-htcondor/test/dag/dagman.dag"
+  };
+  Timestamp = 1473801769; /* "Tue Sep 13 16:22:49 2016" */
+  DagStatus = 5; /* "STATUS_DONE (success)" */
+  NodesTotal = 3;
+  NodesDone = 3;
+  NodesPre = 0;
+  NodesQueued = 0;
+  NodesPost = 0;
+  NodesReady = 0;
+  NodesUnready = 0;
+  NodesFailed = 0;
+  JobProcsHeld = 0;
+  JobProcsIdle = 0; /* includes held */
+]
+[
+  Type = "NodeStatus";
+  Node = "Alex";
+  NodeStatus = 5; /* "STATUS_DONE" */
+  StatusDetails = "";
+  RetryCount = 0;
+  JobProcsQueued = 0;
+  JobProcsHeld = 0;
+]
+[
+  Type = "NodeStatus";
+  Node = "Happy";
+  NodeStatus = 5; /* "STATUS_DONE" */
+  StatusDetails = "";
+  RetryCount = 0;
+  JobProcsQueued = 0;
+  JobProcsHeld = 0;
+]
+[
+  Type = "NodeStatus";
+  Node = "Final";
+  NodeStatus = 5; /* "STATUS_DONE" */
+  StatusDetails = "";
+  RetryCount = 0;
+  JobProcsQueued = 0;
+  JobProcsHeld = 0;
+]
+[
+  Type = "StatusEnd";
+  EndTime = 1473801769; /* "Tue Sep 13 16:22:49 2016" */
+  NextUpdate = 0; /* "none" */
+]
